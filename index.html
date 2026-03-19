@@ -337,9 +337,6 @@
   .card:active { border-left-color: var(--gold); }
 
   .copy-btn {
-    position: absolute;
-    top: 14px;
-    right: 14px;
     background: none;
     border: 1px solid var(--border);
     padding: 4px 8px;
@@ -350,6 +347,7 @@
     cursor: pointer;
     font-family: 'Noto Sans KR', sans-serif;
     transition: border-color 0.2s, color 0.2s;
+    white-space: nowrap;
   }
 
   .copy-btn:hover { border-color: var(--ink3); color: var(--ink2); }
