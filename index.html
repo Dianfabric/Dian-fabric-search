@@ -571,10 +571,17 @@
 
       const sections = keywords.map(keyword => {
         const lower = keyword.toLowerCase();
-        const exact = rows.filter(row => (row[0] || '').toLowerCase() === lower);
+        const exact = rows.filter(row => {
+          const nameA = (row[0] || '').toLowerCase();
+          const nameF = (row[5] || '').toLowerCase();
+          return nameA === lower || nameF === lower;
+        });
+        const exactSet = new Set(exact);
         const partial = rows.filter(row => {
-          const name = (row[0] || '').toLowerCase();
-          return name !== lower && name.includes(lower);
+          if (exactSet.has(row)) return false;
+          const nameA = (row[0] || '').toLowerCase();
+          const nameF = (row[5] || '').toLowerCase();
+          return nameA.includes(lower) || nameF.includes(lower);
         }).slice(0, 5);
         return { keyword, matched: [...exact, ...partial], exactCount: exact.length };
       });
