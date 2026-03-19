@@ -605,11 +605,13 @@
               const weight = row[4] || '';
               const priceNum = price ? Number(price) : 0;
               const priceFormatted = priceNum ? priceNum.toLocaleString() : '-';
-              const hebeSmall = priceNum ? (Math.ceil(priceNum / (1.45 * 0.9144) / 100) * 100).toLocaleString() : '-';
-              const hebeLarge = priceNum ? (Math.ceil(priceNum / (2.9 * 0.9144) / 100) * 100).toLocaleString() : '-';
+              const hebeSmall = priceNum ? (Math.ceil(priceNum / (1.4 * 0.9144) / 1000) * 1000).toLocaleString() : '-';
+              const hebeLarge = priceNum ? (Math.ceil(priceNum / (2.8 * 0.9144) / 1000) * 1000).toLocaleString() : '-';
               const cardId = 'card_' + Math.random().toString(36).substr(2, 9);
               const priceId = 'price_' + Math.random().toString(36).substr(2, 9);
               const unitId = 'unit_' + Math.random().toString(36).substr(2, 9);
+              const btnSmallId = 'btns_' + Math.random().toString(36).substr(2, 9);
+              const btnLargeId = 'btnl_' + Math.random().toString(36).substr(2, 9);
               const copyText = [
                 `제품명: ${name}`,
                 `단가: ${priceFormatted}원/Y`,
@@ -646,9 +648,37 @@
                   ${metaHtml ? `<div class="card-meta">${metaHtml}</div>` : ''}
                 </div>
                 <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;padding-top:2px;">
-                  <button class="copy-btn" id="${cardId}" onclick="copyCard('${cardId}', \`${copyText.replace(/`/g, "'")}\`); document.getElementById('${priceId}').textContent='${priceFormatted}'; document.getElementById('${unitId}').textContent='원 / Y';">복사</button>
-                  <button class="copy-btn" onclick="copyCard('${cardId}', \`${copyTextSmall.replace(/`/g, "'")}\`); document.getElementById('${priceId}').textContent='${hebeSmall}'; document.getElementById('${unitId}').textContent='원 / m²'; document.getElementById('${cardId}').textContent='완료'; setTimeout(()=>document.getElementById('${cardId}').textContent='복사',2000);">헤베(소폭)</button>
-                  <button class="copy-btn" onclick="copyCard('${cardId}', \`${copyTextLarge.replace(/`/g, "'")}\`); document.getElementById('${priceId}').textContent='${hebeLarge}'; document.getElementById('${unitId}').textContent='원 / m²'; document.getElementById('${cardId}').textContent='완료'; setTimeout(()=>document.getElementById('${cardId}').textContent='복사',2000);">헤베(대폭)</button>
+                  <button class="copy-btn" id="${cardId}" onclick="copyCard('${cardId}', \`${copyText.replace(/`/g, "'")}\`); document.getElementById('${priceId}').textContent='${priceFormatted}'; document.getElementById('${unitId}').textContent='원 / Y'; document.getElementById('${btnSmallId}').textContent='헤베(소폭)'; document.getElementById('${btnLargeId}').textContent='헤베(대폭)';">복사</button>
+                  <button class="copy-btn" id="${btnSmallId}" onclick="
+                    var el=document.getElementById('${btnSmallId}');
+                    if(el.textContent==='취소'){
+                      document.getElementById('${priceId}').textContent='${priceFormatted}';
+                      document.getElementById('${unitId}').textContent='원 / Y';
+                      el.textContent='헤베(소폭)';
+                      document.getElementById('${btnLargeId}').textContent='헤베(대폭)';
+                    } else {
+                      copyCard('${cardId}', \`${copyTextSmall.replace(/`/g, "'")}\`);
+                      document.getElementById('${priceId}').textContent='${hebeSmall}';
+                      document.getElementById('${unitId}').textContent='원 / m²';
+                      el.textContent='취소';
+                      document.getElementById('${btnLargeId}').textContent='헤베(대폭)';
+                    }
+                  ">헤베(소폭)</button>
+                  <button class="copy-btn" id="${btnLargeId}" onclick="
+                    var el=document.getElementById('${btnLargeId}');
+                    if(el.textContent==='취소'){
+                      document.getElementById('${priceId}').textContent='${priceFormatted}';
+                      document.getElementById('${unitId}').textContent='원 / Y';
+                      el.textContent='헤베(대폭)';
+                      document.getElementById('${btnSmallId}').textContent='헤베(소폭)';
+                    } else {
+                      copyCard('${cardId}', \`${copyTextLarge.replace(/`/g, "'")}\`);
+                      document.getElementById('${priceId}').textContent='${hebeLarge}';
+                      document.getElementById('${unitId}').textContent='원 / m²';
+                      el.textContent='취소';
+                      document.getElementById('${btnSmallId}').textContent='헤베(소폭)';
+                    }
+                  ">헤베(대폭)</button>
                 </div>
               </div>`;
             }).join('');
