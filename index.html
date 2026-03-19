@@ -606,7 +606,7 @@
               return `<div class="card">
                 <button class="copy-btn" id="${cardId}" onclick="copyCard('${cardId}', \`${copyText.replace(/`/g, "'")}\`)">복사</button>
                 <div class="card-name">${name}</div>
-                <div class="card-price-row"><div class="card-price">${priceFormatted}</div><div class="card-price-unit">원 / Y</div></div>
+                <div class="card-price-row"><div class="card-price">${priceFormatted}</div><div class="card-price-unit">원 / Y</div><div style="font-size:10px;color:var(--ink4);letter-spacing:0.5px;margin-left:4px;">(부가세 별도)</div></div>
                 ${metaHtml ? `<div class="card-meta">${metaHtml}</div>` : ''}
               </div>`;
             }).join('');
