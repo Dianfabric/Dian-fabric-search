@@ -555,17 +555,25 @@
     const raw = document.getElementById('searchInput').value.trim();
     if (!raw) return;
 
-    const keywords = raw.split(',').map(k => {
-      const extracted = extractFabricName(k.trim());
-      return extracted.length > 0 ? extracted : k.trim();
-    }).filter(k => k.length > 0);
-
     showError('');
     showScreen('loading');
 
     try {
       const rows = await fetchAllData();
       if (rows.length === 0) { showScreen('empty'); return; }
+
+      const rawKeywords = raw.split(',').map(k => k.trim()).filter(k => k.length > 0);
+
+      // 입력값 그대로 완전일치 먼저 확인, 없으면 컬러코드 제거 후 사용
+      const keywords = rawKeywords.map(k => {
+        const lower = k.toLowerCase();
+        const hasExact = rows.some(row =>
+          (row[0] || '').toLowerCase() === lower || (row[5] || '').toLowerCase() === lower
+        );
+        if (hasExact) return k;
+        const extracted = extractFabricName(k);
+        return extracted.length > 0 ? extracted : k;
+      });
 
       const sections = keywords.map(keyword => {
         const lower = keyword.toLowerCase();
