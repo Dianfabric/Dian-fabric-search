@@ -558,11 +558,19 @@
     return allData;
   }
 
+  function extractFabricName(input) {
+    // -401, #401, 공백+숫자 등 컬러코드 제거 → 원단명만 추출
+    return input.replace(/[\s\-#_]+\d+.*$/, '').trim();
+  }
+
   async function doSearch() {
     const raw = document.getElementById('searchInput').value.trim();
     if (!raw) return;
 
-    const keywords = raw.split(',').map(k => k.trim()).filter(k => k.length > 0);
+    const keywords = raw.split(',').map(k => {
+      const extracted = extractFabricName(k.trim());
+      return extracted.length > 0 ? extracted : k.trim();
+    }).filter(k => k.length > 0);
     showError('');
     showScreen('loading');
 
