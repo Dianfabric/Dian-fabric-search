@@ -477,7 +477,7 @@
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       </button>
     </div>
-    <div class="search-hint">Enter — 검색 &nbsp;·&nbsp; 여러 개는 쉼표로 구분 (예: HALO-005, HALO-010)</div>
+    <div class="search-hint">Enter — 검색 &nbsp;·&nbsp; 정확한 원단명 입력 &nbsp;·&nbsp; 여러 개는 쉼표로 구분</div>
   </div>
 </div>
 
@@ -571,7 +571,12 @@
 
       const sections = keywords.map(keyword => {
         const lower = keyword.toLowerCase();
-        return { keyword, matched: rows.filter(row => (row[0] || '').toLowerCase().includes(lower)) };
+        const exact = rows.filter(row => (row[0] || '').toLowerCase() === lower);
+        const partial = rows.filter(row => {
+          const name = (row[0] || '').toLowerCase();
+          return name !== lower && name.includes(lower);
+        }).slice(0, 5);
+        return { keyword, matched: [...exact, ...partial], exactCount: exact.length };
       });
 
       const totalFound = sections.reduce((sum, s) => sum + s.matched.length, 0);
@@ -581,10 +586,13 @@
         ? `<strong>${totalFound}</strong>건 조회됨`
         : `<strong>${keywords.length}</strong>개 검색어 &nbsp;·&nbsp; <strong>${totalFound}</strong>건 조회됨`;
 
-      document.getElementById('resultsList').innerHTML = sections.map(({ keyword, matched }) => {
+      document.getElementById('resultsList').innerHTML = sections.map(({ keyword, matched, exactCount }) => {
         const cardsHtml = matched.length === 0
           ? `<div class="no-result-row">조회 결과 없음</div>`
-          : matched.map(row => {
+          : matched.map((row, idx) => {
+              const divider = (idx === exactCount && exactCount > 0 && matched.length > exactCount)
+                ? `<div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin:14px 0 10px;padding-bottom:8px;border-bottom:1px dashed var(--border);">유사 결과</div>`
+                : '';
               const name = row[0] || '-';
               const price = row[1] || '';
               const material = row[2] || '';
@@ -603,7 +611,7 @@
               if (width) metaHtml += `<div class="meta-item"><div class="meta-label">폭</div><div class="meta-value">${width}</div></div>`;
               if (weight) metaHtml += `<div class="meta-item"><div class="meta-label">무게</div><div class="meta-value">${weight} gsm</div></div>`;
               const cardId = 'card_' + Math.random().toString(36).substr(2, 9);
-              return `<div class="card">
+              return divider + `<div class="card">
                 <button class="copy-btn" id="${cardId}" onclick="copyCard('${cardId}', \`${copyText.replace(/`/g, "'")}\`)">복사</button>
                 <div class="card-name">${name}</div>
                 <div class="card-price-row"><div class="card-price">${priceFormatted}</div><div class="card-price-unit">원 / Y</div><div style="font-size:10px;color:var(--ink4);letter-spacing:0.5px;margin-left:4px;">(부가세 별도)</div></div>
@@ -613,6 +621,7 @@
 
         return `<div class="results-section"><div class="section-keyword"><span>${keyword}</span><span class="section-count">${matched.length}</span></div>${cardsHtml}</div>`;
       }).join('');
+
 
       showScreen('results');
     } catch (err) {
