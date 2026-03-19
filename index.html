@@ -179,7 +179,7 @@
   }
 
   .search-hint {
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 0.5px;
     color: var(--ink4);
     margin-top: 7px;
@@ -226,7 +226,7 @@
   @keyframes slide { 0% { left: -100%; } 50% { left: 0%; } 100% { left: 100%; } }
 
   .loading-text {
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 3px;
     text-transform: uppercase;
     color: var(--ink3);
@@ -235,8 +235,8 @@
   .empty { display: none; text-align: center; padding: 60px 20px; }
   .empty.active { display: block; }
 
-  .empty-line { width: 24px; height: 1px; background: var(--border2); margin: 0 auto 16px; }
-  .empty-text { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--ink3); }
+  .empty-line { width: 24px; height: 1px; background: var(--border2); margin: 0 auto 20px; }
+  .empty-text { font-size: 14px; letter-spacing: 1px; color: var(--ink3); }
 
   .welcome { text-align: center; padding: 60px 20px; }
 
@@ -251,7 +251,7 @@
 
   .welcome-title {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 400;
     color: var(--ink2);
     margin-bottom: 10px;
@@ -259,27 +259,38 @@
   }
 
   .welcome-sub {
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: 0.5px;
     color: var(--ink3);
-    line-height: 1.9;
+    line-height: 2;
   }
 
+  /* 모바일 중간 사이즈 */
+  @media (min-width: 480px) {
+    .search-hint { font-size: 13px; }
+    .empty-text { font-size: 15px; }
+    .welcome-title { font-size: 26px; }
+    .welcome-sub { font-size: 14px; }
+  }
+
+  /* PC */
   @media (min-width: 768px) {
     .header { padding: 0 48px; }
-    .header-brand { padding: 28px 0 20px; margin-bottom: 18px; }
-    .brand-name { font-size: 28px; letter-spacing: 6px; }
-    .brand-sub { font-size: 12px; letter-spacing: 3px; margin-top: 4px; }
-    .social-btn { width: 40px; height: 40px; border-radius: 8px; }
-    .social-btn svg { width: 18px; height: 18px; }
-    .search-area { padding-bottom: 20px; }
-    .search-textarea { font-size: 15px; padding: 14px 20px; min-height: 52px; }
-    .search-hint { font-size: 11px; margin-top: 10px; }
+    .header-brand { padding: 40px 0 30px; margin-bottom: 24px; }
+    .brand-name { font-size: 36px; letter-spacing: 8px; }
+    .brand-sub { font-size: 14px; letter-spacing: 3px; margin-top: 6px; }
+    .social-btn { width: 44px; height: 44px; border-radius: 8px; }
+    .social-btn svg { width: 20px; height: 20px; }
+    .search-area { padding-bottom: 28px; }
+    .search-textarea { font-size: 16px; padding: 18px 24px; min-height: 62px; }
+    .search-hint { font-size: 13px; margin-top: 12px; }
+    .empty { padding: 100px 20px; }
+    .empty-text { font-size: 18px; letter-spacing: 1px; }
     .welcome { padding: 100px 20px; }
-    .welcome-deco { font-size: 64px; margin-bottom: 28px; }
-    .welcome-title { font-size: 28px; margin-bottom: 14px; letter-spacing: 2px; }
-    .welcome-sub { font-size: 13px; }
-    .main { padding: 32px 48px; }
+    .welcome-deco { font-size: 72px; margin-bottom: 32px; }
+    .welcome-title { font-size: 32px; margin-bottom: 16px; letter-spacing: 2px; }
+    .welcome-sub { font-size: 15px; }
+    .main { padding: 40px 48px; }
   }
 
   .summary-bar {
