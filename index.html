@@ -609,27 +609,6 @@
               const priceFormatted = priceNum ? priceNum.toLocaleString() : '-';
               const hebeSmall = priceNum ? (Math.ceil(priceNum / (1.45 * 0.9144) / 100) * 100).toLocaleString() : '-';
               const hebeLarge = priceNum ? (Math.ceil(priceNum / (2.9 * 0.9144) / 100) * 100).toLocaleString() : '-';
-              const copyText = [
-                `제품명: ${name}`,
-                `단가: ${priceFormatted}원/Y`,
-                material ? `소재: ${material}` : '',
-                width ? `폭: ${width}` : '',
-                weight ? `무게: ${weight}gsm` : ''
-              ].filter(Boolean).join('\n');
-              const copyTextSmall = [
-                `제품명: ${name}`,
-                `헤베단가(소폭): ${hebeSmall}원/m²`,
-                material ? `소재: ${material}` : '',
-                width ? `폭: ${width}` : '',
-                weight ? `무게: ${weight}gsm` : ''
-              ].filter(Boolean).join('\n');
-              const copyTextLarge = [
-                `제품명: ${name}`,
-                `헤베단가(대폭): ${hebeLarge}원/m²`,
-                material ? `소재: ${material}` : '',
-                width ? `폭: ${width}` : '',
-                weight ? `무게: ${weight}gsm` : ''
-              ].filter(Boolean).join('\n');
               const cardId = 'card_' + Math.random().toString(36).substr(2, 9);
               const priceId = 'price_' + Math.random().toString(36).substr(2, 9);
               const unitId = 'unit_' + Math.random().toString(36).substr(2, 9);
