@@ -681,7 +681,7 @@
                     document.getElementById('${unitId}').textContent='원 / Y';
                     el.textContent='헤베';
                   } else {
-                    copyCard('${cardId}', \`${copyTextAuto.replace(/`/g, "'")}\`);
+                    copyText(\`${copyTextAuto.replace(/`/g, "'")}\`);
                     document.getElementById('${priceId}').textContent='${hebeAuto}';
                     document.getElementById('${unitId}').textContent='원 / m²';
                     el.textContent='취소';
@@ -708,7 +708,7 @@
                     el.textContent='헤베(소폭)';
                     document.getElementById('${btnLargeId}').textContent='헤베(대폭)';
                   } else {
-                    copyCard('${cardId}', \`${copyTextSmall.replace(/`/g, "'")}\`);
+                    copyText(\`${copyTextSmall.replace(/`/g, "'")}\`);
                     document.getElementById('${priceId}').textContent='${hebeSmall}';
                     document.getElementById('${unitId}').textContent='원 / m²';
                     el.textContent='취소';
@@ -723,7 +723,7 @@
                     el.textContent='헤베(대폭)';
                     document.getElementById('${btnSmallId}').textContent='헤베(소폭)';
                   } else {
-                    copyCard('${cardId}', \`${copyTextLarge.replace(/`/g, "'")}\`);
+                    copyText(\`${copyTextLarge.replace(/`/g, "'")}\`);
                     document.getElementById('${priceId}').textContent='${hebeLarge}';
                     document.getElementById('${unitId}').textContent='원 / m²';
                     el.textContent='취소';
@@ -765,6 +765,10 @@
       btn.classList.add('copied');
       setTimeout(() => { btn.textContent = '복사'; btn.classList.remove('copied'); }, 2000);
     });
+  }
+
+  function copyText(text) {
+    navigator.clipboard.writeText(text);
   }
 
   document.getElementById('searchInput').addEventListener('keydown', e => {
