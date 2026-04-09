@@ -12,7 +12,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const range = encodeURIComponent(`${sheetName}!A:G`);
+    const range = encodeURIComponent(`${sheetName}!A:H`);
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${apiKey}`;
     const response = await fetch(url);
     const data = await response.json();
