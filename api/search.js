@@ -5,8 +5,10 @@ export default async function handler(req, res) {
 
   if (req.method === 'OPTIONS') return res.status(200).end();
 
-  const sheet = req.query.sheet || (req.body && req.body.sheet);
-  const admin = req.query.admin || (req.body && req.body.admin);
+  let body = req.body;
+  if (typeof body === 'string') { try { body = JSON.parse(body); } catch(e) {} }
+  const sheet = req.query.sheet || (body && body.sheet);
+  const admin = req.query.admin || (body && body.admin);
 
   const apiKey = process.env.GOOGLE_API_KEY;
   const sheetId = process.env.SHEET_ID;
