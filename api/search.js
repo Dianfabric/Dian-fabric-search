@@ -36,7 +36,7 @@ export default async function handler(req, res) {
       rows = rows.map(row => row.slice(0, 7));
     }
 
-    return res.status(200).json({ rows, _d: { isAdmin, adminLen: admin ? admin.length : 0, pwLen: process.env.ADMIN_PASSWORD ? process.env.ADMIN_PASSWORD.length : 0, colSample: rows[0] ? rows[0].length : 0 } });
+    return res.status(200).json({ rows });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }

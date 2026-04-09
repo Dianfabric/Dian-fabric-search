@@ -702,13 +702,6 @@
     const data = await res.json();
     if (data.error) throw new Error(data.error);
     allData = data.rows || [];
-    // 임시 디버그: 컬럼 수 확인 (나중에 제거)
-    if (allData.length > 0) {
-      const cols = allData[0].length;
-      const hasH = allData.filter(r => r.length >= 8 && r[7]).length;
-      console.log('[DEBUG] isAdmin:', isAdmin, '| cols:', cols, '| rowsWithH:', hasH, '| _d:', data._d);
-      alert('[디버그] isAdmin: ' + isAdmin + ' | 컬럼수: ' + cols + ' | H열 데이터: ' + hasH + '개\n\n' + JSON.stringify(data._d));
-    }
     return allData;
   }
 
@@ -813,7 +806,7 @@
 
               const brand = row[6] || '';
               const dealerPrice = row[7] || '';
-              const dealerPriceNum = dealerPrice ? Number(dealerPrice) : 0;
+              const dealerPriceNum = dealerPrice ? Number(dealerPrice.toString().replace(/,/g, '')) : 0;
               const dealerPriceFormatted = dealerPriceNum ? dealerPriceNum.toLocaleString() : '';
 
               let metaHtml = '';
