@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fabric Price — NVIDIA Style Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #76b900;
+    --primary-dark: #5a8d00;
+    --canvas: #ffffff;
+    --surface-soft: #f7f7f7;
+    --surface-dark: #000000;
+    --surface-elevated: #1a1a1a;
+    --hairline: #cccccc;
+    --hairline-strong: #5e5e5e;
+    --ink: #000000;
+    --body: #1a1a1a;
+    --mute: #757575;
+    --stone: #898989;
+    --ash: #a7a7a7;
+    --on-dark: #ffffff;
+    --on-dark-mute: rgba(255, 255, 255, 0.7);
+    --link-blue: #0046a4;
+
+    --r-sm: 2px;
+    --r-none: 0;
+    --r-full: 9999px;
+
+    --s-xxs: 2px;
+    --s-xs: 4px;
+    --s-sm: 8px;
+    --s-md: 12px;
+    --s-lg: 16px;
+    --s-xl: 24px;
+    --s-xxl: 32px;
+    --s-section: 64px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--canvas);
+    color: var(--ink);
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ───── UTILITY BAR ───── */
+  .utility-bar {
+    background: var(--surface-dark);
+    color: var(--on-dark-mute);
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 48px;
+    font-size: 12px;
+    border-bottom: 1px solid var(--hairline-strong);
+  }
+  .utility-bar a {
+    color: var(--on-dark-mute);
+    text-decoration: none;
+    margin-left: 24px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  .utility-bar a:hover { color: var(--on-dark); }
+
+  /* ───── HERO CHAPTER (BLACK) ───── */
+  .hero {
+    background: var(--surface-dark);
+    color: var(--on-dark);
+    padding: 80px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-eyebrow {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 12px;
+    height: 12px;
+    background: var(--primary);
+    display: inline-block;
+  }
+  .hero h1 {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    margin-bottom: 16px;
+    max-width: 720px;
+  }
+  .hero p.subhead {
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--on-dark-mute);
+    max-width: 640px;
+    margin-bottom: 40px;
+  }
+
+  /* Search row */
+  .search-row {
+    display: flex;
+    gap: 12px;
+    max-width: 720px;
+    margin-top: 16px;
+  }
+  .search-input {
+    flex: 1;
+    height: 56px;
+    padding: 0 20px;
+    background: var(--canvas);
+    color: var(--ink);
+    border: 1px solid var(--canvas);
+    border-radius: var(--r-sm);
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 400;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .search-input::placeholder { color: var(--mute); }
+  .search-input:focus { border: 2px solid var(--primary); padding: 0 19px; }
+
+  .btn-primary {
+    height: 56px;
+    padding: 0 32px;
+    background: var(--primary);
+    color: var(--ink);
+    border: none;
+    border-radius: var(--r-sm);
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-primary:hover { background: var(--primary-dark); color: var(--on-dark); }
+  .btn-primary:active { background: var(--primary-dark); color: var(--on-dark); }
+
+  .btn-outline {
+    height: 44px;
+    padding: 0 24px;
+    background: transparent;
+    color: var(--ink);
+    border: 2px solid var(--primary);
+    border-radius: var(--r-sm);
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .btn-outline-on-dark {
+    height: 44px;
+    padding: 0 24px;
+    background: transparent;
+    color: var(--on-dark);
+    border: 1px solid var(--on-dark);
+    border-radius: var(--r-sm);
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  /* ───── BREADCRUMB BAR ───── */
+  .breadcrumb {
+    background: var(--surface-soft);
+    height: 48px;
+    display: flex;
+    align-items: center;
+    padding: 0 48px;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .breadcrumb-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    width: 100%;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--body);
+  }
+  .breadcrumb-inner span.sep { color: var(--mute); margin: 0 12px; }
+  .breadcrumb-inner span.current { color: var(--mute); }
+
+  /* ───── RESULTS SECTION ───── */
+  .results {
+    background: var(--canvas);
+    padding: var(--s-section) 48px;
+  }
+  .results-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .results-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .results-header h2 {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--ink);
+  }
+  .results-header .summary {
+    font-size: 16px;
+    color: var(--mute);
+  }
+  .results-header .summary strong { color: var(--ink); font-weight: 700; }
+
+  .filter-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .pill-tab {
+    height: 40px;
+    padding: 0 18px;
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-sm);
+    font-family: inherit;
+    font-size: 14.4px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+  }
+  .pill-tab.active {
+    background: var(--ink);
+    color: var(--on-dark);
+    border-color: var(--ink);
+  }
+
+  /* Card grid */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--s-xl);
+  }
+
+  .product-card {
+    background: var(--canvas);
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-sm);
+    padding: var(--s-xl);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.15s;
+  }
+  .product-card:hover { border-color: var(--ink); }
+  .product-card .corner-square {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 12px;
+    height: 12px;
+    background: var(--primary);
+  }
+
+  .badge-tag {
+    display: inline-block;
+    padding: 4px 10px;
+    background: var(--surface-soft);
+    color: var(--body);
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-radius: var(--r-sm);
+    margin-bottom: 16px;
+    align-self: flex-start;
+  }
+
+  .product-card h3 {
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.47;
+    color: var(--ink);
+    margin-bottom: 4px;
+    letter-spacing: 0.02em;
+  }
+  .product-card .color-code {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--mute);
+    margin-bottom: 20px;
+    font-feature-settings: 'tnum';
+  }
+
+  .spec-table {
+    border-top: 1px solid var(--hairline);
+    margin-bottom: 20px;
+  }
+  .spec-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--hairline);
+    font-size: 14px;
+  }
+  .spec-row .label { color: var(--mute); font-weight: 400; }
+  .spec-row .value { color: var(--ink); font-weight: 700; }
+
+  .price-block {
+    margin-bottom: 20px;
+  }
+  .price-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--mute);
+    margin-bottom: 4px;
+  }
+  .price-value {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.1;
+    font-feature-settings: 'tnum';
+  }
+  .price-value .unit {
+    font-size: 16px;
+    color: var(--mute);
+    font-weight: 400;
+  }
+
+  .ghost-link {
+    margin-top: auto;
+    color: var(--ink);
+    font-size: 14.4px;
+    font-weight: 700;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding-top: 16px;
+    border-top: 1px solid var(--hairline);
+  }
+  .ghost-link::after {
+    content: '→';
+    color: var(--primary);
+    font-weight: 700;
+    transition: transform 0.15s;
+  }
+  .ghost-link:hover::after { transform: translateX(4px); }
+
+  /* ───── DARK CTA STRIP ───── */
+  .cta-strip {
+    background: var(--surface-dark);
+    padding: 64px 48px;
+    color: var(--on-dark);
+  }
+  .cta-strip-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+  }
+  .cta-strip h2 {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+  .cta-strip p {
+    font-size: 16px;
+    color: var(--on-dark-mute);
+    margin-top: 8px;
+  }
+  .cta-strip-actions {
+    display: flex;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  /* ───── FOOTER ───── */
+  footer {
+    background: var(--surface-dark);
+    color: var(--on-dark-mute);
+    padding: var(--s-section) 48px 32px;
+    border-top: 1px solid var(--hairline-strong);
+  }
+  .footer-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 32px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--hairline-strong);
+  }
+  .footer-col h4 {
+    color: var(--on-dark);
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    letter-spacing: 0.02em;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: 10px; }
+  .footer-col a {
+    color: var(--on-dark-mute);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+  .footer-col a:hover { color: var(--on-dark); }
+
+  .footer-bottom {
+    padding-top: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--on-dark);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+  .footer-brand .mark {
+    width: 14px;
+    height: 14px;
+    background: var(--primary);
+    display: inline-block;
+  }
+  .footer-legal {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mute);
+  }
+
+  /* ───── RESPONSIVE ───── */
+  @media (max-width: 1280px) {
+    .card-grid { grid-template-columns: repeat(3, 1fr); }
+    .footer-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 768px) {
+    .hero { padding: 48px 24px; }
+    .hero h1 { font-size: 36px; }
+    .hero p.subhead { font-size: 18px; }
+    .results, .cta-strip, footer { padding-left: 24px; padding-right: 24px; }
+    .card-grid { grid-template-columns: repeat(2, 1fr); }
+    .footer-grid { grid-template-columns: repeat(2, 1fr); }
+    .search-row { flex-direction: column; }
+    .results-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .cta-strip-inner { flex-direction: column; align-items: flex-start; }
+  }
+  @media (max-width: 480px) {
+    .hero h1 { font-size: 32px; }
+    .card-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════ UTILITY BAR ═══════ -->
+<div class="utility-bar">
+  <a href="#">KO</a>
+  <a href="#">관리자 로그인</a>
+</div>
+
+<!-- ═══════ HERO ═══════ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">DIAN FABRIC</div>
+    <h1>Fabric Price.<br>Instant Lookup.</h1>
+    <p class="subhead">디안 원단 카탈로그의 단가를 즉시 조회하세요. 원단명을 입력하거나 컬러번호와 함께 검색할 수 있습니다.</p>
+
+    <div class="search-row">
+      <input type="text" class="search-input" placeholder="원단명 입력 (예: BOHO, MONCLER#24, ALPINE-101)">
+      <button class="btn-primary">Search →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ BREADCRUMB ═══════ -->
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    HOME <span class="sep">/</span> FABRIC PRICE <span class="sep">/</span> <span class="current">SEARCH RESULTS</span>
+  </div>
+</div>
+
+<!-- ═══════ RESULTS ═══════ -->
+<section class="results">
+  <div class="results-inner">
+
+    <div class="results-header">
+      <h2>Search Results</h2>
+      <div class="summary"><strong>6</strong>건 조회됨 · 검색어 "BOHO"</div>
+    </div>
+
+    <div class="filter-tabs">
+      <button class="pill-tab active">ALL</button>
+      <button class="pill-tab">FABRIC</button>
+      <button class="pill-tab">VELVET</button>
+      <button class="pill-tab">SHEER</button>
+      <button class="pill-tab">LEATHER</button>
+    </div>
+
+    <div class="card-grid">
+
+      <!-- Card 1 -->
+      <article class="product-card">
+        <div class="corner-square"></div>
+        <span class="badge-tag">FABRIC</span>
+        <h3>BOHO</h3>
+        <div class="color-code">COLOR · 28</div>
+        <div class="spec-table">
+          <div class="spec-row"><span class="label">조성</span><span class="value">PL 100%</span></div>
+          <div class="spec-row"><span class="label">폭</span><span class="value">140cm</span></div>
+          <div class="spec-row"><span class="label">용도</span><span class="value">소파 / 쿠션</span></div>
+        </div>
+        <div class="price-block">
+          <div class="price-label">Price per yard</div>
+          <div class="price-value">28,000<span class="unit">/Y</span></div>
+        </div>
+        <a href="#" class="ghost-link">View Details</a>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="product-card">
+        <div class="corner-square"></div>
+        <span class="badge-tag">FABRIC</span>
+        <h3>BOHO</h3>
+        <div class="color-code">COLOR · 32</div>
+        <div class="spec-table">
+          <div class="spec-row"><span class="label">조성</span><span class="value">PL 100%</span></div>
+          <div class="spec-row"><span class="label">폭</span><span class="value">140cm</span></div>
+          <div class="spec-row"><span class="label">용도</span><span class="value">소파 / 쿠션</span></div>
+        </div>
+        <div class="price-block">
+          <div class="price-label">Price per yard</div>
+          <div class="price-value">28,000<span class="unit">/Y</span></div>
+        </div>
+        <a href="#" class="ghost-link">View Details</a>
+      </article>
+
+      <!-- Card 3 -->
+      <article class="product-card">
+        <div class="corner-square"></div>
+        <span class="badge-tag">VELVET</span>
+        <h3>MONCLER</h3>
+        <div class="color-code">COLOR · 24</div>
+        <div class="spec-table">
+          <div class="spec-row"><span class="label">조성</span><span class="value">CO 70% PL 30%</span></div>
+          <div class="spec-row"><span class="label">폭</span><span class="value">145cm</span></div>
+          <div class="spec-row"><span class="label">용도</span><span class="value">소파 / 침대헤드</span></div>
+        </div>
+        <div class="price-block">
+          <div class="price-label">Price per yard</div>
+          <div class="price-value">32,000<span class="unit">/Y</span></div>
+        </div>
+        <a href="#" class="ghost-link">View Details</a>
+      </article>
+
+      <!-- Card 4 -->
+      <article class="product-card">
+        <div class="corner-square"></div>
+        <span class="badge-tag">FABRIC</span>
+        <h3>ALPINE</h3>
+        <div class="color-code">COLOR · 101</div>
+        <div class="spec-table">
+          <div class="spec-row"><span class="label">조성</span><span class="value">RECYCLE PL 100%</span></div>
+          <div class="spec-row"><span class="label">폭</span><span class="value">140cm</span></div>
+          <div class="spec-row"><span class="label">용도</span><span class="value">소파 / 벽패널</span></div>
+        </div>
+        <div class="price-block">
+          <div class="price-label">Price per yard</div>
+          <div class="price-value">22,000<span class="unit">/Y</span></div>
+        </div>
+        <a href="#" class="ghost-link">View Details</a>
+      </article>
+
+      <!-- Card 5 -->
+      <article class="product-card">
+        <div class="corner-square"></div>
+        <span class="badge-tag">LINEN</span>
+        <h3>WILSON</h3>
+        <div class="color-code">COLOR · 305</div>
+        <div class="spec-table">
+          <div class="spec-row"><span class="label">조성</span><span class="value">LI 55% CO 45%</span></div>
+          <div class="spec-row"><span class="label">폭</span><span class="value">280cm</span></div>
+          <div class="spec-row"><span class="label">용도</span><span class="value">커튼 / 침구</span></div>
+        </div>
+        <div class="price-block">
+          <div class="price-label">Price per yard</div>
+          <div class="price-value">35,000<span class="unit">/Y</span></div>
+        </div>
+        <a href="#" class="ghost-link">View Details</a>
+      </article>
+
+      <!-- Card 6 -->
+      <article class="product-card">
+        <div class="corner-square"></div>
+        <span class="badge-tag">SHEER</span>
+        <h3>THREAD</h3>
+        <div class="color-code">COLOR · 12</div>
+        <div class="spec-table">
+          <div class="spec-row"><span class="label">조성</span><span class="value">PL 100%</span></div>
+          <div class="spec-row"><span class="label">폭</span><span class="value">300cm</span></div>
+          <div class="spec-row"><span class="label">용도</span><span class="value">커튼</span></div>
+        </div>
+        <div class="price-block">
+          <div class="price-label">Price per yard</div>
+          <div class="price-value">18,000<span class="unit">/Y</span></div>
+        </div>
+        <a href="#" class="ghost-link">View Details</a>
+      </article>
+
+      <!-- Card 7 -->
+      <article class="product-card">
+        <div class="corner-square"></div>
+        <span class="badge-tag">LEATHER</span>
+        <h3>HERMAS</h3>
+        <div class="color-code">COLOR · 88</div>
+        <div class="spec-table">
+          <div class="spec-row"><span class="label">조성</span><span class="value">PU 100%</span></div>
+          <div class="spec-row"><span class="label">폭</span><span class="value">137cm</span></div>
+          <div class="spec-row"><span class="label">용도</span><span class="value">소파 / 스툴</span></div>
+        </div>
+        <div class="price-block">
+          <div class="price-label">Price per yard</div>
+          <div class="price-value">45,000<span class="unit">/Y</span></div>
+        </div>
+        <a href="#" class="ghost-link">View Details</a>
+      </article>
+
+      <!-- Card 8 -->
+      <article class="product-card">
+        <div class="corner-square"></div>
+        <span class="badge-tag">FABRIC</span>
+        <h3>PALACE</h3>
+        <div class="color-code">COLOR · 17</div>
+        <div class="spec-table">
+          <div class="spec-row"><span class="label">조성</span><span class="value">CO 100%</span></div>
+          <div class="spec-row"><span class="label">폭</span><span class="value">140cm</span></div>
+          <div class="spec-row"><span class="label">용도</span><span class="value">소파 / 쿠션</span></div>
+        </div>
+        <div class="price-block">
+          <div class="price-label">Price per yard</div>
+          <div class="price-value">26,000<span class="unit">/Y</span></div>
+        </div>
+        <a href="#" class="ghost-link">View Details</a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ DARK CTA STRIP ═══════ -->
+<section class="cta-strip">
+  <div class="cta-strip-inner">
+    <div>
+      <h2>전체 카탈로그를 한번에 확인하세요.</h2>
+      <p>관리자 로그인 시 대리점가까지 함께 표시됩니다.</p>
+    </div>
+    <div class="cta-strip-actions">
+      <button class="btn-primary">Get Started</button>
+      <button class="btn-outline-on-dark">Documentation</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ FOOTER ═══════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>Products</h4>
+        <ul>
+          <li><a href="#">Fabric</a></li>
+          <li><a href="#">Velvet</a></li>
+          <li><a href="#">Sheer</a></li>
+          <li><a href="#">Leather</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Solutions</h4>
+        <ul>
+          <li><a href="#">Sofa</a></li>
+          <li><a href="#">Curtain</a></li>
+          <li><a href="#">Bedding</a></li>
+          <li><a href="#">Wall Panel</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">Catalog</a></li>
+          <li><a href="#">Sample Book</a></li>
+          <li><a href="#">Care Guide</a></li>
+          <li><a href="#">Order History</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About Dian</a></li>
+          <li><a href="#">Showroom</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Shipping</a></li>
+          <li><a href="#">Returns</a></li>
+          <li><a href="#">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy</a></li>
+          <li><a href="#">Terms</a></li>
+          <li><a href="#">Cookies</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-brand"><span class="mark"></span> DIAN</div>
+      <div class="footer-legal">© 2026 DIAN FABRIC. ALL RIGHTS RESERVED.</div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

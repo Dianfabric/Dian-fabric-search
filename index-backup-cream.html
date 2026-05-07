@@ -5,22 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fabric Price</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Mono:wght@300;400&display=swap');
 
   :root {
-    /* Variable names preserved for JS compatibility — values mapped to NVIDIA palette */
-    --bg: #ffffff;          /* canvas */
+    --bg: #faf9f7;
     --white: #ffffff;
-    --cream: #f7f7f7;       /* surface-soft */
-    --border: #e0e0e0;      /* hairline */
-    --border2: #cccccc;     /* hairline-stronger */
-    --ink: #000000;         /* ink */
-    --ink2: #1a1a1a;        /* body */
-    --ink3: #757575;        /* mute */
-    --ink4: #a7a7a7;        /* ash */
-    --gold: #76b900;        /* NVIDIA Green — primary accent */
-    --gold-light: #ebf5d8;  /* pale green wash */
-    --gold-dark: #5a8d00;   /* primary-dark for active state */
+    --cream: #f5f2ed;
+    --border: #e8e3dc;
+    --border2: #d4cdc4;
+    --ink: #1c1a18;
+    --ink2: #4a4540;
+    --ink3: #8c857d;
+    --ink4: #b8b0a8;
+    --gold: #c8a96e;
+    --gold-light: #f7f0e6;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -28,11 +26,9 @@
   body {
     background: var(--bg);
     color: var(--ink);
-    font-family: 'Inter', 'Noto Sans KR', system-ui, -apple-system, sans-serif;
+    font-family: 'Noto Sans KR', sans-serif;
     min-height: 100vh;
-    font-weight: 400;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    font-weight: 300;
   }
 
   .header {
@@ -48,39 +44,27 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 0 16px;
+    padding: 16px 0 12px;
     border-bottom: 1px solid var(--border);
-    margin-bottom: 16px;
+    margin-bottom: 12px;
   }
 
   .brand-name {
-    font-family: 'Inter', sans-serif;
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: 0.02em;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    text-transform: uppercase;
     color: var(--ink);
-    position: relative;
-    padding-left: 22px;
-  }
-  .brand-name::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 12px;
-    height: 12px;
-    background: var(--gold);
   }
 
   .brand-sub {
     font-size: 10px;
-    letter-spacing: 0.1em;
+    letter-spacing: 2px;
     text-transform: uppercase;
     color: var(--ink3);
-    font-weight: 700;
-    margin-top: 4px;
-    padding-left: 22px;
+    font-weight: 300;
+    margin-top: 2px;
   }
 
   .header-right {
@@ -98,19 +82,20 @@
   .social-btn {
     width: 32px;
     height: 32px;
-    border-radius: 2px;
+    border-radius: 6px;
     border: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: center;
     text-decoration: none;
     background: var(--white);
-    transition: border-color 0.15s;
+    transition: border-color 0.2s, background 0.2s;
     position: relative;
   }
 
   .social-btn:hover {
-    border-color: var(--ink);
+    border-color: var(--border2);
+    background: var(--bg);
   }
 
   .social-btn svg {
@@ -126,13 +111,10 @@
     transform: translateX(-50%);
     background: var(--ink);
     color: var(--white);
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    font-size: 9px;
+    letter-spacing: 1px;
     white-space: nowrap;
     padding: 4px 8px;
-    border-radius: 2px;
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.15s;
@@ -143,71 +125,64 @@
 
 
 
-  .search-area { padding-bottom: 16px; }
+  .search-area { padding-bottom: 14px; }
 
   .search-wrap {
     display: flex;
-    align-items: stretch;
+    align-items: flex-start;
     border: 1px solid var(--border2);
     background: var(--white);
-    border-radius: 2px;
-    transition: border-color 0.15s;
   }
-  .search-wrap:focus-within { border-color: var(--gold); }
 
   .search-textarea {
     flex: 1;
     background: transparent;
     border: none;
     padding: 12px 16px;
-    font-size: 14px;
-    font-family: inherit;
-    font-weight: 400;
+    font-size: 13px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 300;
     color: var(--ink);
     outline: none;
     resize: none;
-    line-height: 1.5;
+    line-height: 1.7;
     min-height: 44px;
     max-height: 120px;
     overflow-y: auto;
   }
 
-  .search-textarea::placeholder { color: var(--ink4); font-size: 13px; }
+  .search-textarea::placeholder { color: var(--ink4); font-size: 12px; }
 
   .search-btn {
-    background: var(--gold);
+    background: var(--ink);
     border: none;
-    padding: 0 22px;
+    padding: 0 18px;
     align-self: stretch;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 56px;
+    min-width: 52px;
     flex-shrink: 0;
-    border-radius: 0 2px 2px 0;
-    transition: background 0.15s;
+    transition: background 0.2s;
   }
 
-  .search-btn:hover { background: var(--gold-dark); }
-  .search-btn:active { background: var(--gold-dark); }
+  .search-btn:active { background: var(--ink2); }
 
   .search-btn svg {
-    width: 16px;
-    height: 16px;
-    stroke: var(--ink);
+    width: 14px;
+    height: 14px;
+    stroke: #fff;
     fill: none;
-    stroke-width: 2;
+    stroke-width: 1.5;
     stroke-linecap: round;
   }
 
   .search-hint {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.5px;
     color: var(--ink4);
-    margin-top: 8px;
+    margin-top: 7px;
     text-align: right;
   }
 
@@ -215,24 +190,22 @@
 
   .error-msg {
     display: none;
-    background: #ffeef0;
-    border: 1px solid #e52020;
-    border-left-width: 3px;
-    padding: 12px 16px;
-    font-size: 13px;
-    color: #650b0b;
-    margin-bottom: 16px;
-    border-radius: 2px;
+    background: #fdf2f2;
+    border: 1px solid #f0d0d0;
+    padding: 11px 14px;
+    font-size: 12px;
+    color: #a04040;
+    margin-bottom: 14px;
   }
 
   .error-msg.active { display: block; }
 
-  .loading { display: none; text-align: center; padding: 64px 20px; }
+  .loading { display: none; text-align: center; padding: 60px 20px; }
   .loading.active { display: block; }
 
   .loading-line {
-    width: 48px;
-    height: 2px;
+    width: 40px;
+    height: 1px;
     background: var(--border2);
     margin: 0 auto 16px;
     position: relative;
@@ -246,7 +219,7 @@
     top: 0;
     width: 100%;
     height: 100%;
-    background: var(--gold);
+    background: var(--ink);
     animation: slide 1s ease-in-out infinite;
   }
 
@@ -254,79 +227,71 @@
 
   .loading-text {
     font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
+    letter-spacing: 3px;
     text-transform: uppercase;
     color: var(--ink3);
   }
 
-  .empty { display: none; text-align: center; padding: 64px 20px; }
+  .empty { display: none; text-align: center; padding: 60px 20px; }
   .empty.active { display: block; }
 
-  .empty-line { width: 32px; height: 2px; background: var(--gold); margin: 0 auto 24px; }
-  .empty-text { font-size: 22px; font-weight: 700; color: var(--ink); margin-bottom: 10px; letter-spacing: -0.01em; }
-  .empty-sub { font-size: 14px; color: var(--ink3); }
+  .empty-line { width: 24px; height: 1px; background: var(--border2); margin: 0 auto 24px; }
+  .empty-text { font-size: 20px; letter-spacing: 0.5px; color: var(--ink2); margin-bottom: 10px; }
+  .empty-sub { font-size: 16px; letter-spacing: 0.5px; color: var(--ink3); }
 
-  .welcome { text-align: center; padding: 32px 20px 48px; }
+  .welcome { text-align: center; padding: 16px 20px 40px; }
 
-  .welcome-deco { display: none; }
+  .welcome-deco {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    font-weight: 300;
+    color: var(--border);
+    line-height: 1;
+    margin-bottom: 12px;
+  }
 
   .welcome-title {
-    font-family: 'Inter', sans-serif;
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--ink);
-    margin-bottom: 12px;
-    letter-spacing: -0.01em;
-    position: relative;
-    display: inline-block;
-    padding-left: 24px;
-  }
-  .welcome-title::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 14px;
-    height: 14px;
-    background: var(--gold);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 400;
+    color: var(--ink2);
+    margin-bottom: 10px;
+    letter-spacing: 1px;
   }
 
   .welcome-sub {
-    font-size: 14px;
-    letter-spacing: 0;
+    font-size: 13px;
+    letter-spacing: 0.5px;
     color: var(--ink3);
-    line-height: 1.6;
+    line-height: 2;
   }
 
   /* 모바일 중간 사이즈 */
   @media (min-width: 480px) {
-    .search-hint { font-size: 12px; }
-    .empty-text { font-size: 26px; }
-    .welcome-title { font-size: 32px; }
-    .welcome-sub { font-size: 15px; }
+    .search-hint { font-size: 13px; }
+    .empty-text { font-size: 15px; }
+    .welcome-title { font-size: 26px; }
+    .welcome-sub { font-size: 14px; }
   }
 
   /* PC */
   @media (min-width: 768px) {
     .header { padding: 0 48px; }
-    .header-brand { padding: 32px 0 24px; margin-bottom: 24px; }
-    .brand-name { font-size: 28px; padding-left: 28px; }
-    .brand-name::before { width: 18px; height: 18px; }
-    .brand-sub { font-size: 12px; margin-top: 6px; padding-left: 28px; }
-    .social-btn { width: 40px; height: 40px; border-radius: 2px; }
-    .social-btn svg { width: 18px; height: 18px; }
-    .search-area { padding-bottom: 32px; }
-    .search-textarea { font-size: 16px; padding: 18px 24px; min-height: 60px; }
-    .search-hint { font-size: 12px; margin-top: 12px; }
-    .empty { padding: 96px 20px; }
-    .empty-text { font-size: 32px; }
-    .empty-sub { font-size: 16px; }
-    .welcome { padding: 32px 20px 64px; }
-    .welcome-title { font-size: 44px; margin-bottom: 16px; padding-left: 32px; }
-    .welcome-title::before { width: 20px; height: 20px; }
-    .welcome-sub { font-size: 16px; }
+    .header-brand { padding: 40px 0 30px; margin-bottom: 24px; }
+    .brand-name { font-size: 36px; letter-spacing: 8px; }
+    .brand-sub { font-size: 14px; letter-spacing: 3px; margin-top: 6px; }
+    .social-btn { width: 44px; height: 44px; border-radius: 8px; }
+    .social-btn svg { width: 20px; height: 20px; }
+    .search-area { padding-bottom: 28px; }
+    .search-textarea { font-size: 16px; padding: 18px 24px; min-height: 62px; }
+    .search-hint { font-size: 13px; margin-top: 12px; }
+    .empty { padding: 100px 20px; }
+    .empty-text { font-size: 26px; }
+    .empty-sub { font-size: 20px; }
+    .welcome { padding: 20px 20px 50px; }
+    .welcome-deco { font-size: 72px; margin-bottom: 16px; }
+    .welcome-title { font-size: 32px; margin-bottom: 16px; letter-spacing: 2px; }
+    .welcome-sub { font-size: 15px; }
     .main { padding: 40px 48px; }
   }
 
@@ -334,45 +299,39 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 24px;
-    padding-bottom: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
     border-bottom: 1px solid var(--border);
-    flex-wrap: wrap;
-    gap: 12px;
   }
 
   .summary-text {
-    font-size: 14px;
-    letter-spacing: 0;
+    font-size: 13px;
+    letter-spacing: 1px;
     color: var(--ink3);
   }
 
-  .summary-text strong { color: var(--ink); font-weight: 700; }
+  .summary-text strong { color: var(--ink); font-weight: 500; }
 
   .clear-btn {
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.05em;
+    font-size: 13px;
+    letter-spacing: 1px;
     text-transform: uppercase;
-    color: var(--ink3);
+    color: var(--ink4);
     background: none;
     border: none;
     cursor: pointer;
     padding: 4px 0;
-    transition: color 0.15s;
   }
-  .clear-btn:hover { color: var(--ink); }
 
-  .results-section { margin-bottom: 32px; }
+  .results-section { margin-bottom: 28px; }
 
   .section-keyword {
     font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.05em;
+    letter-spacing: 1.5px;
     text-transform: uppercase;
-    color: var(--ink);
-    margin-bottom: 16px;
-    padding-bottom: 12px;
+    color: var(--ink2);
+    margin-bottom: 12px;
+    padding-bottom: 10px;
     border-bottom: 1px solid var(--border);
     display: flex;
     align-items: center;
@@ -380,119 +339,92 @@
   }
 
   .section-count {
-    font-family: 'Inter', monospace;
+    font-family: 'DM Mono', monospace;
     font-size: 13px;
-    font-weight: 700;
     color: var(--ink3);
-    font-feature-settings: 'tnum';
   }
 
   .no-result-row {
     padding: 16px;
     text-align: center;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 1px;
     color: var(--ink4);
     border: 1px dashed var(--border);
-    border-radius: 2px;
   }
 
   .card {
     background: var(--white);
     border: 1px solid var(--border);
-    border-radius: 2px;
-    padding: 24px;
+    border-left: 2px solid transparent;
+    padding: 24px 24px 20px;
     margin-bottom: 0;
-    transition: border-color 0.15s;
+    transition: border-left-color 0.2s;
     position: relative;
   }
-  .card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 12px;
-    height: 12px;
-    background: var(--gold);
-    z-index: 1;
-  }
-  .card:hover { border-color: var(--ink); }
-  .card.selected {
-    border-color: var(--gold) !important;
-    border-width: 2px !important;
-    padding: 23px;
-  }
+
+  .card:active { border-left-color: var(--gold); }
 
   .copy-btn {
-    background: var(--white);
+    background: none;
     border: 1px solid var(--border);
-    padding: 7px 12px;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.05em;
+    padding: 6px 10px;
+    font-size: 10px;
+    letter-spacing: 1.5px;
     text-transform: uppercase;
-    color: var(--ink);
+    color: var(--ink4);
     cursor: pointer;
-    font-family: inherit;
-    border-radius: 2px;
-    transition: border-color 0.15s, background 0.15s, color 0.15s;
+    font-family: 'Noto Sans KR', sans-serif;
+    transition: border-color 0.2s, color 0.2s;
     white-space: nowrap;
-  }
-  .copy-btn:hover { border-color: var(--ink); }
-  .copy-btn.copied {
-    background: var(--gold);
-    border-color: var(--gold);
-    color: var(--ink);
   }
 
   .card-checked {
-    background: var(--gold) !important;
-    border-color: var(--gold) !important;
+    background: var(--ink) !important;
+    border-color: var(--ink) !important;
   }
   .card-checked::after {
     content: '';
     width: 8px;
     height: 5px;
-    border-left: 2px solid var(--ink);
-    border-bottom: 2px solid var(--ink);
+    border-left: 2px solid #fff;
+    border-bottom: 2px solid #fff;
     transform: rotate(-45deg) translateY(-1px);
     display: block;
   }
+  .card.selected {
+    border-left: 2px solid var(--gold) !important;
+  }
 
   .card-name {
-    font-size: 17px;
-    font-weight: 700;
+    font-size: 16px;
+    font-weight: 500;
     color: var(--ink);
-    margin-bottom: 16px;
-    line-height: 1.4;
-    letter-spacing: 0;
+    margin-bottom: 14px;
+    line-height: 1.5;
+    letter-spacing: 0.3px;
   }
 
   .card-price-row {
     display: flex;
     align-items: baseline;
-    gap: 8px;
+    gap: 6px;
     margin-bottom: 18px;
     padding-bottom: 18px;
     border-bottom: 1px solid var(--border);
   }
 
   .card-price {
-    font-family: 'Inter', sans-serif;
-    font-size: 32px;
-    font-weight: 700;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 30px;
+    font-weight: 500;
     color: var(--ink);
-    letter-spacing: -0.02em;
-    font-feature-settings: 'tnum';
-    line-height: 1;
+    letter-spacing: -0.5px;
   }
 
   .card-price-unit {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
+    font-size: 12px;
+    letter-spacing: 1.5px;
     text-transform: uppercase;
     color: var(--ink3);
   }
@@ -508,8 +440,7 @@
 
   .meta-label {
     font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
+    letter-spacing: 1.5px;
     text-transform: uppercase;
     color: var(--ink3);
   }
@@ -612,15 +543,14 @@
 
 
 <div id="adminModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.4);z-index:500;align-items:center;justify-content:center;">
-  <div style="background:var(--white);padding:32px;width:320px;border:1px solid var(--border);border-radius:2px;position:relative;">
-    <div style="position:absolute;top:0;left:0;width:12px;height:12px;background:var(--gold);"></div>
-    <div style="font-family:inherit;font-size:18px;font-weight:700;color:var(--ink);margin-bottom:6px;letter-spacing:-0.01em;">관리자 로그인</div>
-    <div style="font-size:12px;color:var(--ink3);margin-bottom:20px;letter-spacing:0;">대리점가를 조회하려면 로그인하세요</div>
-    <input type="password" id="adminPwInput" placeholder="비밀번호" style="width:100%;box-sizing:border-box;padding:11px 14px;font-size:14px;border:1px solid var(--border2);background:var(--white);font-family:inherit;margin-bottom:12px;outline:none;border-radius:2px;" onkeydown="if(event.key==='Enter')checkAdminPw()">
-    <div id="adminError" style="font-size:12px;color:#e52020;margin-bottom:12px;display:none;font-weight:700;">비밀번호가 올바르지 않습니다</div>
+  <div style="background:var(--white);padding:32px;width:300px;border:1px solid var(--border);">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:500;color:var(--ink);margin-bottom:6px;">관리자 로그인</div>
+    <div style="font-size:11px;color:var(--ink3);margin-bottom:20px;letter-spacing:0.5px;">대리점가를 조회하려면 로그인하세요</div>
+    <input type="password" id="adminPwInput" placeholder="비밀번호" style="width:100%;box-sizing:border-box;padding:10px 12px;font-size:13px;border:1px solid var(--border2);background:var(--bg);font-family:'Noto Sans KR',sans-serif;margin-bottom:12px;outline:none;" onkeydown="if(event.key==='Enter')checkAdminPw()">
+    <div id="adminError" style="font-size:11px;color:#a04040;margin-bottom:10px;display:none;">비밀번호가 올바르지 않습니다</div>
     <div style="display:flex;gap:8px;">
-      <button onclick="checkAdminPw()" style="flex:1;background:var(--gold);color:var(--ink);border:none;padding:11px;font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;font-family:inherit;cursor:pointer;border-radius:2px;">확인</button>
-      <button onclick="closeAdminModal()" style="flex:1;background:var(--white);border:1px solid var(--border2);padding:11px;font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;font-family:inherit;cursor:pointer;color:var(--ink);border-radius:2px;">취소</button>
+      <button onclick="checkAdminPw()" style="flex:1;background:var(--ink);color:var(--white);border:none;padding:10px;font-size:11px;letter-spacing:2px;font-family:'Noto Sans KR',sans-serif;cursor:pointer;">확인</button>
+      <button onclick="closeAdminModal()" style="flex:1;background:none;border:1px solid var(--border2);padding:10px;font-size:11px;letter-spacing:2px;font-family:'Noto Sans KR',sans-serif;cursor:pointer;color:var(--ink3);">취소</button>
     </div>
   </div>
 </div>
@@ -634,20 +564,20 @@
       원단명을 입력해 단가를 조회하세요<br>
       여러 원단을 한 번에 검색할 수 있습니다
     </div>
-    <div style="margin-top:40px; display:inline-flex; flex-direction:column; gap:12px; min-width:280px;">
-      <a href="https://www.diantex.kr/" target="_blank" style="display:flex; align-items:center; gap:14px; text-decoration:none; color:var(--ink); font-size:14px; font-weight:700; letter-spacing:0; padding:16px 20px; border:1px solid var(--border); background:var(--white); transition:border-color 0.15s; border-radius:2px;">
+    <div style="margin-top:32px; display:inline-flex; flex-direction:column; gap:16px; min-width:260px;">
+      <a href="https://www.diantex.kr/" target="_blank" style="display:flex; align-items:center; gap:14px; text-decoration:none; color:var(--ink2); font-size:15px; letter-spacing:0.5px; padding:16px 24px; border:1px solid var(--border); background:var(--white); transition:border-color 0.2s;">
         <span style="font-size:18px;">🌐</span> 디안 홈페이지
       </a>
-      <a href="https://www.instagram.com/diantextile/" target="_blank" style="display:flex; align-items:center; gap:14px; text-decoration:none; color:var(--ink); font-size:14px; font-weight:700; letter-spacing:0; padding:16px 20px; border:1px solid var(--border); background:var(--white); transition:border-color 0.15s; border-radius:2px;">
+      <a href="https://www.instagram.com/diantextile/" target="_blank" style="display:flex; align-items:center; gap:14px; text-decoration:none; color:var(--ink2); font-size:15px; letter-spacing:0.5px; padding:16px 24px; border:1px solid var(--border); background:var(--white); transition:border-color 0.2s;">
         <span style="font-size:18px;">📷</span> 디안 인스타그램
       </a>
-      <a href="http://pf.kakao.com/_xbSuYK" target="_blank" style="display:flex; align-items:center; gap:14px; text-decoration:none; color:var(--ink); font-size:14px; font-weight:700; letter-spacing:0; padding:16px 20px; border:1px solid var(--border); background:var(--white); transition:border-color 0.15s; border-radius:2px;">
+      <a href="http://pf.kakao.com/_xbSuYK" target="_blank" style="display:flex; align-items:center; gap:14px; text-decoration:none; color:var(--ink2); font-size:15px; letter-spacing:0.5px; padding:16px 24px; border:1px solid var(--border); background:var(--white); transition:border-color 0.2s;">
         <span style="font-size:18px;">💬</span> 디안 카카오톡 문의
       </a>
-      <a href="https://map.naver.com/p/search/%EB%94%94%EC%95%88/place/13272942?c=15.00,0,0,0,dh&placePath=/ticket" target="_blank" style="display:flex; align-items:center; gap:14px; text-decoration:none; color:var(--ink); font-size:14px; font-weight:700; letter-spacing:0; padding:16px 20px; border:1px solid var(--border); background:var(--white); transition:border-color 0.15s; border-radius:2px;">
+      <a href="https://map.naver.com/p/search/%EB%94%94%EC%95%88/place/13272942?c=15.00,0,0,0,dh&placePath=/ticket" target="_blank" style="display:flex; align-items:center; gap:14px; text-decoration:none; color:var(--ink2); font-size:15px; letter-spacing:0.5px; padding:16px 24px; border:1px solid var(--border); background:var(--white); transition:border-color 0.2s;">
         <span style="font-size:18px;">📍</span> 디안 쇼룸 예약
       </a>
-      <a href="https://glitter-engine-eed.notion.site/DIAN-FABRIC-87096fc2181646479d29263332894d2b" target="_blank" style="display:flex; align-items:center; gap:14px; text-decoration:none; color:var(--ink); font-size:14px; font-weight:700; letter-spacing:0; padding:16px 20px; border:1px solid var(--border); background:var(--white); transition:border-color 0.15s; border-radius:2px;">
+      <a href="https://glitter-engine-eed.notion.site/DIAN-FABRIC-87096fc2181646479d29263332894d2b" target="_blank" style="display:flex; align-items:center; gap:14px; text-decoration:none; color:var(--ink2); font-size:15px; letter-spacing:0.5px; padding:16px 24px; border:1px solid var(--border); background:var(--white); transition:border-color 0.2s;">
         <span style="font-size:18px;">📋</span> 모바일 원단 갤러리
       </a>
     </div>
@@ -663,7 +593,7 @@
     <div class="empty-text">일치하는 원단이 없습니다</div>
     <div class="empty-sub">제품명을 다시 확인해주세요</div>
     <div style="margin-top:40px;">
-      <a href="http://pf.kakao.com/_xbSuYK" target="_blank" style="display:inline-flex; align-items:center; gap:8px; background:#FEE500; color:#3C1E1E; text-decoration:none; padding:12px 28px; font-size:13px; font-weight:700; letter-spacing:0.05em; font-family:inherit; transition:opacity 0.15s; border-radius:2px;">
+      <a href="http://pf.kakao.com/_xbSuYK" target="_blank" style="display:inline-flex; align-items:center; gap:8px; background:#FEE500; color:#3C1E1E; text-decoration:none; padding:12px 28px; font-size:13px; letter-spacing:1px; font-family:'Noto Sans KR',sans-serif; transition:opacity 0.2s;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="#3C1E1E"><path d="M12 3C6.477 3 2 6.477 2 10.5c0 2.611 1.564 4.906 3.926 6.265L4.5 21l4.688-2.344C10.076 18.88 11.02 19 12 19c5.523 0 10-3.477 10-7.5S17.523 3 12 3z"/></svg>
         디안 카카오톡 단가 문의하기
       </a>
@@ -674,7 +604,7 @@
     <div class="summary-bar">
       <div class="summary-text" id="summaryText"></div>
       <div style="display:flex;gap:10px;align-items:center;">
-        <label id="dealerCopyWrap" style="display:none;align-items:center;gap:6px;cursor:pointer;font-size:11px;font-weight:700;color:var(--ink);letter-spacing:0.05em;text-transform:uppercase;user-select:none;">
+        <label id="dealerCopyWrap" style="display:none;align-items:center;gap:4px;cursor:pointer;font-size:11px;color:var(--ink2);letter-spacing:0.5px;user-select:none;">
           <input type="checkbox" id="dealerCopyCheck" style="accent-color:var(--gold);cursor:pointer;">대리점가
         </label>
         <button class="copy-btn" id="copyAllBtn" onclick="copyAll()">전체복사</button>
@@ -839,7 +769,7 @@
           ? `<div class="no-result-row">조회 결과 없음</div>`
           : matched.map((row, idx) => {
               const divider = (idx === exactCount && exactCount > 0 && matched.length > exactCount)
-                ? `<div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);margin:16px 0 12px;padding-bottom:8px;border-bottom:1px dashed var(--border);">유사 결과</div>`
+                ? `<div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin:14px 0 10px;padding-bottom:8px;border-bottom:1px dashed var(--border);">유사 결과</div>`
                 : '';
               const name = row[0] || '-';
               const nameF = row[5] || '';
@@ -1046,28 +976,28 @@
 
               const checkId = 'chk_' + Math.random().toString(36).substr(2, 9);
 
-              return divider + `<div class="card" data-copyid="${cardId}" data-copytext="${copyText.replace(/"/g, '&quot;')}" data-dealercopytext="${dealerFormatted ? (copyName + ' ' + dealerFormatted + '/Y').replace(/"/g, '&quot;') : ''}" style="display:flex;gap:16px;align-items:stretch;">
-                <div style="display:flex;flex-direction:column;align-items:center;padding-top:4px;padding-left:8px;">
-                  <div id="${checkId}" onclick="this.classList.toggle('card-checked'); this.closest('.card').classList.toggle('selected');" style="width:16px;height:16px;border:1.5px solid var(--border2);border-radius:2px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:border-color 0.15s;"></div>
+              return divider + `<div class="card" data-copyid="${cardId}" data-copytext="${copyText.replace(/"/g, '&quot;')}" data-dealercopytext="${dealerFormatted ? (copyName + ' ' + dealerFormatted + '/Y').replace(/"/g, '&quot;') : ''}" style="display:flex;gap:14px;align-items:stretch;">
+                <div style="display:flex;flex-direction:column;align-items:center;padding-top:2px;">
+                  <div id="${checkId}" onclick="this.classList.toggle('card-checked'); this.closest('.card').classList.toggle('selected');" style="width:16px;height:16px;border:1.5px solid var(--border2);border-radius:3px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;"></div>
                 </div>
                 <div style="flex:1;min-width:0;">
                   <div class="card-name">${name}</div>
                   <div class="card-price-row">
                     <div class="card-price" id="${priceId}">${priceFormatted}</div>
                     <div class="card-price-unit" id="${unitId}">원 / Y</div>
-                    <div style="font-size:10px;font-weight:400;color:var(--ink4);letter-spacing:0;margin-left:4px;">(부가세 별도)</div>
+                    <div style="font-size:10px;color:var(--ink4);letter-spacing:0.5px;margin-left:4px;">(부가세 별도)</div>
                   </div>
                   ${metaHtml ? `<div class="card-meta">${metaHtml}</div>` : ''}
-                  ${dealerPriceFormatted ? `<div class="dealer-price-row" style="display:${isAdmin ? 'block' : 'none'};margin-top:12px;padding-top:12px;border-top:1px dashed var(--border);"><div style="font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:4px;">대리점가</div><div id="${dealerDispId}" style="font-size:15px;color:var(--ink);font-weight:700;font-feature-settings:'tnum';">${dealerPriceFormatted} 원/Y</div></div>` : ''}
+                  ${dealerPriceFormatted ? `<div class="dealer-price-row" style="display:${isAdmin ? 'block' : 'none'};margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);"><div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink4);margin-bottom:2px;">대리점가</div><div id="${dealerDispId}" style="font-size:14px;color:var(--ink2);font-weight:400;">${dealerPriceFormatted} 원/Y</div></div>` : ''}
                 </div>
                 <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;padding-top:2px;align-items:flex-end;">
                   ${hasWidth ? btnsWithWidth : btnsNoWidth}
-                  ${brand ? `<div style="font-size:10px;font-weight:700;color:var(--ink4);letter-spacing:0.05em;text-transform:uppercase;margin-top:4px;">${brand}</div>` : ''}
+                  ${brand ? `<div style="font-size:11px;color:var(--ink4);letter-spacing:0.5px;margin-top:2px;">${brand}</div>` : ''}
                 </div>
               </div>`;
             }).join('');
 
-        return `<div class="results-section"><div class="section-keyword"><span>${keyword}</span><span class="section-count">${matched.length}</span></div><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,480px),1fr));gap:16px;">${cardsHtml}</div></div>`;
+        return `<div class="results-section"><div class="section-keyword"><span>${keyword}</span><span class="section-count">${matched.length}</span></div><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,480px),1fr));gap:12px;">${cardsHtml}</div></div>`;
       }).join('');
 
 

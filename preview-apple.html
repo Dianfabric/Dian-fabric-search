@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fabric Price — Apple Style Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Brand & accent */
+    --primary: #0066cc;
+    --primary-focus: #0071e3;
+    --primary-on-dark: #2997ff;
+
+    /* Surfaces */
+    --canvas: #ffffff;
+    --canvas-parchment: #f5f5f7;
+    --surface-pearl: #fafafc;
+    --surface-tile-1: #272729;
+    --surface-tile-2: #2a2a2c;
+    --surface-tile-3: #252527;
+    --surface-black: #000000;
+    --surface-chip: rgba(210, 210, 215, 0.64);
+
+    /* Text */
+    --ink: #1d1d1f;
+    --body: #1d1d1f;
+    --on-dark: #ffffff;
+    --body-muted: #cccccc;
+    --ink-muted-80: #333333;
+    --ink-muted-48: #7a7a7a;
+
+    /* Hairlines */
+    --divider-soft: rgba(0, 0, 0, 0.04);
+    --hairline: #e0e0e0;
+
+    /* Radii */
+    --r-none: 0;
+    --r-sm: 8px;
+    --r-md: 11px;
+    --r-lg: 18px;
+    --r-pill: 9999px;
+
+    /* Shadow (the only one — for product imagery) */
+    --shadow-product: rgba(0, 0, 0, 0.22) 3px 5px 30px 0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--canvas);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.47;
+    letter-spacing: -0.374px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ─── GLOBAL NAV ─── */
+  .global-nav {
+    background: var(--surface-black);
+    color: var(--on-dark);
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 22px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .global-nav-inner {
+    width: 100%;
+    max-width: 1024px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: -0.12px;
+  }
+  .global-nav .brand {
+    font-weight: 600;
+    letter-spacing: 0.12em;
+  }
+  .global-nav ul {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+  .global-nav a {
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .global-nav a:hover { color: var(--on-dark); }
+
+  /* ─── SUB-NAV FROSTED ─── */
+  .sub-nav {
+    background: rgba(245, 245, 247, 0.8);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    height: 52px;
+    display: flex;
+    align-items: center;
+    padding: 0 22px;
+    position: sticky;
+    top: 44px;
+    z-index: 99;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  }
+  .sub-nav-inner {
+    width: 100%;
+    max-width: 1024px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .sub-nav .category {
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 1.19;
+    letter-spacing: 0.231px;
+    color: var(--ink);
+  }
+  .sub-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .sub-nav-right a {
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: -0.224px;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .sub-nav-right a:hover { color: var(--primary); }
+
+  /* ─── BUTTONS ─── */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary);
+    color: var(--on-dark);
+    font-family: inherit;
+    font-size: 17px;
+    font-weight: 400;
+    letter-spacing: -0.374px;
+    line-height: 1;
+    padding: 11px 22px;
+    border: 1px solid var(--primary);
+    border-radius: var(--r-pill);
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.1s, background 0.2s;
+    min-height: 44px;
+  }
+  .btn-primary:hover { background: #0077ed; border-color: #0077ed; }
+  .btn-primary:active { transform: scale(0.95); }
+  .btn-primary:focus-visible { outline: 2px solid var(--primary-focus); outline-offset: 2px; }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    color: var(--primary);
+    font-family: inherit;
+    font-size: 17px;
+    font-weight: 400;
+    letter-spacing: -0.374px;
+    line-height: 1;
+    padding: 11px 22px;
+    border: 1px solid var(--primary);
+    border-radius: var(--r-pill);
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.1s;
+    min-height: 44px;
+  }
+  .btn-secondary:active { transform: scale(0.95); }
+
+  .btn-secondary-on-dark {
+    border-color: var(--primary-on-dark);
+    color: var(--primary-on-dark);
+  }
+  .btn-primary-on-dark {
+    background: var(--primary-on-dark);
+    border-color: var(--primary-on-dark);
+    color: var(--on-dark);
+  }
+
+  .btn-dark-utility {
+    display: inline-flex;
+    align-items: center;
+    background: var(--ink);
+    color: var(--on-dark);
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: -0.224px;
+    padding: 8px 15px;
+    border-radius: var(--r-sm);
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .btn-dark-utility:active { transform: scale(0.95); }
+
+  /* ─── HERO ─── */
+  .hero {
+    background: var(--canvas);
+    text-align: center;
+    padding: 80px 22px 64px;
+  }
+  .hero h1 {
+    font-size: 56px;
+    font-weight: 600;
+    line-height: 1.07;
+    letter-spacing: -0.28px;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .hero .tagline {
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 1.14;
+    letter-spacing: 0.196px;
+    color: var(--ink);
+    margin-bottom: 24px;
+  }
+  .hero .cta-row {
+    display: flex;
+    gap: 28px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 16px;
+  }
+  .hero .cta-row a.text-cta {
+    font-size: 17px;
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 400;
+  }
+  .hero .cta-row a.text-cta:hover { text-decoration: underline; }
+  .hero .cta-row a.text-cta::after { content: ' ›'; }
+
+  /* ─── SEARCH SECTION ─── */
+  .search-section {
+    background: var(--canvas-parchment);
+    padding: 80px 22px;
+  }
+  .search-section-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .search-section h2 {
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 1.10;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .search-section p {
+    font-size: 21px;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 32px;
+    letter-spacing: 0.231px;
+  }
+  .search-input-wrap {
+    position: relative;
+    max-width: 560px;
+    margin: 0 auto 28px;
+  }
+  .search-input {
+    width: 100%;
+    height: 50px;
+    background: var(--canvas);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: var(--r-pill);
+    padding: 12px 20px 12px 48px;
+    font-family: inherit;
+    font-size: 17px;
+    color: var(--ink);
+    letter-spacing: -0.374px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .search-input::placeholder { color: var(--ink-muted-48); }
+  .search-input:focus {
+    border-color: var(--primary-focus);
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15);
+  }
+  .search-icon {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    color: var(--ink-muted-48);
+  }
+
+  /* ─── PRODUCT TILE (light) ─── */
+  .tile {
+    padding: 80px 22px 0;
+    text-align: center;
+    overflow: hidden;
+  }
+  .tile-light { background: var(--canvas); color: var(--ink); }
+  .tile-parchment { background: var(--canvas-parchment); color: var(--ink); }
+  .tile-dark { background: var(--surface-tile-1); color: var(--on-dark); }
+  .tile-dark-2 { background: var(--surface-tile-2); color: var(--on-dark); }
+
+  .tile h2 {
+    font-size: 56px;
+    font-weight: 600;
+    line-height: 1.07;
+    letter-spacing: -0.28px;
+    margin-bottom: 8px;
+  }
+  .tile .tile-tag {
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: 0.231px;
+    line-height: 1.19;
+    margin-bottom: 8px;
+    color: var(--primary);
+  }
+  .tile-dark .tile-tag,
+  .tile-dark-2 .tile-tag { color: var(--primary-on-dark); }
+  .tile .tile-sub {
+    font-size: 24px;
+    font-weight: 300;
+    line-height: 1.5;
+    color: var(--ink);
+    max-width: 640px;
+    margin: 8px auto 24px;
+  }
+  .tile-dark .tile-sub,
+  .tile-dark-2 .tile-sub { color: var(--body-muted); }
+
+  .tile .cta-row {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-bottom: 48px;
+  }
+
+  .tile-image {
+    margin: 0 auto;
+    max-width: 720px;
+    aspect-ratio: 16/9;
+    border-radius: var(--r-none);
+    background: linear-gradient(135deg, #d9d9dc 0%, #efeff1 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-muted-48);
+    font-size: 14px;
+    letter-spacing: -0.224px;
+    box-shadow: var(--shadow-product);
+  }
+  .tile-dark .tile-image,
+  .tile-dark-2 .tile-image {
+    background: linear-gradient(135deg, #3a3a3c 0%, #525254 100%);
+    color: var(--body-muted);
+  }
+  .tile-image .preview-num {
+    font-size: 80px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.15);
+    letter-spacing: -2px;
+  }
+  .tile-dark .tile-image .preview-num,
+  .tile-dark-2 .tile-image .preview-num {
+    color: rgba(255, 255, 255, 0.15);
+  }
+
+  /* ─── UTILITY GRID (store cards) ─── */
+  .grid-section {
+    background: var(--canvas);
+    padding: 80px 22px;
+  }
+  .grid-section-inner {
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+  .grid-section h2 {
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 1.10;
+    color: var(--ink);
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  .grid-section .summary {
+    font-size: 17px;
+    color: var(--ink-muted-48);
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .grid-section .summary strong { color: var(--ink); font-weight: 600; }
+
+  .filter-pills {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+  }
+  .filter-pill {
+    background: var(--canvas);
+    border: 1px solid var(--hairline);
+    color: var(--ink);
+    padding: 8px 16px;
+    border-radius: var(--r-pill);
+    font-size: 14px;
+    letter-spacing: -0.224px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+  .filter-pill.active {
+    background: var(--ink);
+    color: var(--on-dark);
+    border-color: var(--ink);
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  .util-card {
+    background: var(--canvas);
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-lg);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.15s, border-color 0.15s;
+  }
+  .util-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(0, 0, 0, 0.15);
+  }
+  .util-card .product-img {
+    aspect-ratio: 1/1;
+    background: linear-gradient(135deg, #f5f5f7 0%, #e8e8ed 100%);
+    border-radius: var(--r-sm);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(0,0,0,0.12);
+    font-size: 56px;
+    font-weight: 600;
+    letter-spacing: -1px;
+    box-shadow: var(--shadow-product);
+  }
+  .util-card .eyebrow {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.224px;
+    color: var(--primary);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .util-card h3 {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.374px;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .util-card .color-meta {
+    font-size: 14px;
+    color: var(--ink-muted-48);
+    letter-spacing: -0.224px;
+    margin-bottom: 16px;
+  }
+  .util-card .price {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.374px;
+    margin-bottom: 16px;
+    margin-top: auto;
+  }
+  .util-card .card-cta {
+    color: var(--primary);
+    font-size: 14px;
+    text-decoration: none;
+    font-weight: 400;
+    letter-spacing: -0.224px;
+  }
+  .util-card .card-cta::after { content: ' ›'; }
+  .util-card .card-cta:hover { text-decoration: underline; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--canvas-parchment);
+    color: var(--ink-muted-80);
+    padding: 64px 22px 24px;
+    border-top: 1px solid var(--hairline);
+  }
+  .footer-inner {
+    max-width: 1024px;
+    margin: 0 auto;
+  }
+  .footer-fine {
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--ink-muted-48);
+    letter-spacing: -0.12px;
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 32px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .footer-col h4 {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.12px;
+    margin-bottom: 8px;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col li {
+    font-size: 12px;
+    line-height: 2.41;
+    letter-spacing: -0.12px;
+  }
+  .footer-col a {
+    color: var(--ink-muted-80);
+    text-decoration: none;
+    font-weight: 400;
+  }
+  .footer-col a:hover { text-decoration: underline; color: var(--ink); }
+
+  .footer-bottom {
+    padding-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--ink-muted-48);
+    letter-spacing: -0.12px;
+  }
+  .footer-bottom a {
+    color: var(--ink-muted-48);
+    text-decoration: none;
+    margin-left: 16px;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 1068px) {
+    .card-grid { grid-template-columns: repeat(3, 1fr); }
+    .footer-grid { grid-template-columns: repeat(3, 1fr); }
+    .hero h1 { font-size: 48px; }
+    .tile h2 { font-size: 48px; }
+  }
+  @media (max-width: 833px) {
+    .global-nav ul { display: none; }
+    .card-grid { grid-template-columns: repeat(2, 1fr); }
+    .footer-grid { grid-template-columns: repeat(2, 1fr); }
+    .hero { padding: 56px 22px 48px; }
+    .tile { padding: 56px 22px 0; }
+    .search-section, .grid-section { padding: 56px 22px; }
+    .hero h1, .tile h2 { font-size: 40px; }
+  }
+  @media (max-width: 640px) {
+    .card-grid { grid-template-columns: 1fr; }
+    .hero h1, .tile h2 { font-size: 34px; line-height: 1.12; }
+    .hero .tagline, .tile .tile-sub { font-size: 19px; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .footer-bottom { flex-direction: column; gap: 12px; align-items: flex-start; }
+  }
+  @media (max-width: 419px) {
+    .hero h1, .tile h2 { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════ GLOBAL NAV ═══════ -->
+<nav class="global-nav">
+  <div class="global-nav-inner">
+    <span class="brand">DIAN</span>
+    <ul>
+      <li><a href="#">Fabric</a></li>
+      <li><a href="#">Velvet</a></li>
+      <li><a href="#">Sheer</a></li>
+      <li><a href="#">Leather</a></li>
+      <li><a href="#">Showroom</a></li>
+      <li><a href="#">Support</a></li>
+    </ul>
+    <a href="#" style="color:rgba(255,255,255,0.85);text-decoration:none;">🔍</a>
+  </div>
+</nav>
+
+<!-- ═══════ SUB-NAV ═══════ -->
+<div class="sub-nav">
+  <div class="sub-nav-inner">
+    <span class="category">Fabric Price</span>
+    <div class="sub-nav-right">
+      <a href="#">Catalog</a>
+      <a href="#">Sample</a>
+      <a href="#">Order</a>
+      <a href="#" class="btn-primary" style="font-size:14px;padding:8px 16px;min-height:32px;">Sign in</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ HERO ═══════ -->
+<section class="hero">
+  <h1>Fabric Price.</h1>
+  <p class="tagline">Find any fabric in seconds.</p>
+  <div class="cta-row">
+    <a href="#search" class="btn-primary">Search now</a>
+    <a href="#" class="text-cta">View catalog</a>
+  </div>
+</section>
+
+<!-- ═══════ SEARCH SECTION ═══════ -->
+<section class="search-section" id="search">
+  <div class="search-section-inner">
+    <h2>Type a fabric name.</h2>
+    <p>Try BOHO, MONCLER#24, or ALPINE-101.</p>
+    <div class="search-input-wrap">
+      <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="7" stroke-width="2"/>
+        <path d="m20 20-4-4" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <input type="text" class="search-input" placeholder="원단명 검색...">
+    </div>
+    <div class="cta-row" style="display:flex;gap:16px;justify-content:center;">
+      <a href="#" class="btn-primary">Search</a>
+      <a href="#" class="btn-secondary">Browse all</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ FEATURE TILE 1 (light) ═══════ -->
+<section class="tile tile-light">
+  <p class="tile-tag">BOHO</p>
+  <h2>Soft. Strong.<br>Endlessly versatile.</h2>
+  <p class="tile-sub">PL 100% · 140cm · 28,000원/Y. The everyday workhorse.</p>
+  <div class="cta-row">
+    <a href="#" class="btn-primary">Buy</a>
+    <a href="#" class="btn-secondary">Learn more</a>
+  </div>
+  <div class="tile-image">
+    <span class="preview-num">BOHO</span>
+  </div>
+</section>
+
+<!-- ═══════ FEATURE TILE 2 (dark) ═══════ -->
+<section class="tile tile-dark">
+  <p class="tile-tag">MONCLER</p>
+  <h2>Velvet, perfected.</h2>
+  <p class="tile-sub">CO 70% PL 30% · 145cm · 32,000원/Y. Depth you can feel.</p>
+  <div class="cta-row">
+    <a href="#" class="btn-primary-on-dark btn-primary">Buy</a>
+    <a href="#" class="btn-secondary btn-secondary-on-dark">Learn more</a>
+  </div>
+  <div class="tile-image">
+    <span class="preview-num">MONCLER</span>
+  </div>
+</section>
+
+<!-- ═══════ FEATURE TILE 3 (parchment) ═══════ -->
+<section class="tile tile-parchment">
+  <p class="tile-tag">ALPINE</p>
+  <h2>Recycled. Refined.</h2>
+  <p class="tile-sub">RECYCLE PL 100% · 140cm · 22,000원/Y. Sustainability without compromise.</p>
+  <div class="cta-row">
+    <a href="#" class="btn-primary">Buy</a>
+    <a href="#" class="btn-secondary">Learn more</a>
+  </div>
+  <div class="tile-image">
+    <span class="preview-num">ALPINE</span>
+  </div>
+</section>
+
+<!-- ═══════ UTILITY GRID ═══════ -->
+<section class="grid-section">
+  <div class="grid-section-inner">
+    <h2>Search Results</h2>
+    <p class="summary"><strong>8</strong> matches found · "BOHO"</p>
+
+    <div class="filter-pills">
+      <button class="filter-pill active">All</button>
+      <button class="filter-pill">Fabric</button>
+      <button class="filter-pill">Velvet</button>
+      <button class="filter-pill">Sheer</button>
+      <button class="filter-pill">Leather</button>
+    </div>
+
+    <div class="card-grid">
+
+      <article class="util-card">
+        <div class="product-img">B28</div>
+        <p class="eyebrow">Fabric</p>
+        <h3>BOHO</h3>
+        <p class="color-meta">Color · 28 · PL 100%</p>
+        <p class="price">From ₩28,000/Y</p>
+        <a href="#" class="card-cta">Buy</a>
+      </article>
+
+      <article class="util-card">
+        <div class="product-img">B32</div>
+        <p class="eyebrow">Fabric</p>
+        <h3>BOHO</h3>
+        <p class="color-meta">Color · 32 · PL 100%</p>
+        <p class="price">From ₩28,000/Y</p>
+        <a href="#" class="card-cta">Buy</a>
+      </article>
+
+      <article class="util-card">
+        <div class="product-img">M24</div>
+        <p class="eyebrow">Velvet</p>
+        <h3>MONCLER</h3>
+        <p class="color-meta">Color · 24 · CO 70%</p>
+        <p class="price">From ₩32,000/Y</p>
+        <a href="#" class="card-cta">Buy</a>
+      </article>
+
+      <article class="util-card">
+        <div class="product-img">A101</div>
+        <p class="eyebrow">Fabric</p>
+        <h3>ALPINE</h3>
+        <p class="color-meta">Color · 101 · RPL 100%</p>
+        <p class="price">From ₩22,000/Y</p>
+        <a href="#" class="card-cta">Buy</a>
+      </article>
+
+      <article class="util-card">
+        <div class="product-img">W305</div>
+        <p class="eyebrow">Linen</p>
+        <h3>WILSON</h3>
+        <p class="color-meta">Color · 305 · LI 55%</p>
+        <p class="price">From ₩35,000/Y</p>
+        <a href="#" class="card-cta">Buy</a>
+      </article>
+
+      <article class="util-card">
+        <div class="product-img">T12</div>
+        <p class="eyebrow">Sheer</p>
+        <h3>THREAD</h3>
+        <p class="color-meta">Color · 12 · PL 100%</p>
+        <p class="price">From ₩18,000/Y</p>
+        <a href="#" class="card-cta">Buy</a>
+      </article>
+
+      <article class="util-card">
+        <div class="product-img">H88</div>
+        <p class="eyebrow">Leather</p>
+        <h3>HERMAS</h3>
+        <p class="color-meta">Color · 88 · PU 100%</p>
+        <p class="price">From ₩45,000/Y</p>
+        <a href="#" class="card-cta">Buy</a>
+      </article>
+
+      <article class="util-card">
+        <div class="product-img">P17</div>
+        <p class="eyebrow">Fabric</p>
+        <h3>PALACE</h3>
+        <p class="color-meta">Color · 17 · CO 100%</p>
+        <p class="price">From ₩26,000/Y</p>
+        <a href="#" class="card-cta">Buy</a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ DARK CTA TILE ═══════ -->
+<section class="tile tile-dark-2" style="padding-bottom: 80px;">
+  <h2>Get the full catalog.</h2>
+  <p class="tile-sub">All 14,625 fabrics. Searchable. Always up to date.</p>
+  <div class="cta-row" style="margin-bottom: 0;">
+    <a href="#" class="btn-primary-on-dark btn-primary">Get started</a>
+    <a href="#" class="btn-secondary btn-secondary-on-dark">Sign in</a>
+  </div>
+</section>
+
+<!-- ═══════ FOOTER ═══════ -->
+<footer>
+  <div class="footer-inner">
+    <p class="footer-fine">
+      디안 원단(DIAN FABRIC) 단가는 부가세 별도이며, 출고일 환율 및 재고 상황에 따라 변동될 수 있습니다.
+      대리점가는 관리자 계정에서만 확인 가능합니다.
+    </p>
+
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>Shop & Learn</h4>
+        <ul>
+          <li><a href="#">Fabric</a></li>
+          <li><a href="#">Velvet</a></li>
+          <li><a href="#">Sheer</a></li>
+          <li><a href="#">Leather</a></li>
+          <li><a href="#">Linen</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#">Sample</a></li>
+          <li><a href="#">Catalog</a></li>
+          <li><a href="#">Custom Order</a></li>
+          <li><a href="#">Showroom Visit</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Account</h4>
+        <ul>
+          <li><a href="#">Sign in</a></li>
+          <li><a href="#">Order history</a></li>
+          <li><a href="#">Saved fabrics</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>About Dian</h4>
+        <ul>
+          <li><a href="#">Our story</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Sustainability</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Contact us</a></li>
+          <li><a href="#">Shipping</a></li>
+          <li><a href="#">Returns</a></li>
+          <li><a href="#">FAQ</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>Copyright © 2026 Dian Fabric Co., Ltd. All rights reserved.</span>
+      <span>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+        <a href="#">Site Map</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
